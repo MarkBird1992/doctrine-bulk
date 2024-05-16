@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace SixDreams\Bulk;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Schema\Identifier;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
