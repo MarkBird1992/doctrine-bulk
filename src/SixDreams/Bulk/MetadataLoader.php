@@ -6,6 +6,7 @@ namespace SixDreams\Bulk;
 use Doctrine\ORM\Id\AbstractIdGenerator;
 use Doctrine\ORM\Mapping\AssociationMapping;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\JoinColumnMapping;
 use SixDreams\DTO\ColumnMetadata;
 use SixDreams\DTO\JoinColumnMetadata;
 use SixDreams\DTO\Metadata;
@@ -73,9 +74,6 @@ final class MetadataLoader
 
         foreach ($associations as $association) {
             $column = $association->joinColumns[0] ?? [];
-            if (!\count($column)) {
-                continue; // looks broken...
-            }
             // ONE_TO_ONE  does not have the 'nullable' key, but creates tables that are nullable
             $nullable = ($association->type() === ClassMetadata::ONE_TO_ONE || (bool) $column->nullable);
             $hasDefault = false; // joins can never have a default relation
