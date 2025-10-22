@@ -50,14 +50,11 @@ final class MetadataLoader
         foreach ($metadata->fieldMappings as $field => $mapping) {
             // if ->nullable() is not called doctrine does not include the 'nullable' key,
             // default to doctrines default of false, otherwise get the key
-            $nullableKeyExists = array_key_exists('nullable', $mapping);
-            $nullable = $field === $id ? true : ($nullableKeyExists && (bool) $mapping['nullable']);
+            $nullable = $field === $id ? true : ($mapping->nullable === true);
             // ids are auto increment, so allow default
-            $hasDefault = $field === $id ? true : (
-            array_key_exists('options', $mapping) ? array_key_exists('default', $mapping['options']) : false
-            );
-            $defaultValue = $field === $id ? null : ($hasDefault ? $mapping['options']['default'] : null);
-            $dmeta->addField($field, new ColumnMetadata($mapping['columnName'], $mapping['type'], $nullable, $hasDefault, $defaultValue));
+            $hasDefault = $field === $id ? true : (($mapping->options !== null) ? array_key_exists('default', $mapping->options) : false);
+            $defaultValue = $field === $id ? null : ($hasDefault ? $mapping->options['default'] : null);
+            $dmeta->addField($field, new ColumnMetadata($mapping['columnName'], $mapping->type, $nullable, $hasDefault, $defaultValue));
         }
 
         $generator = $metadata->customGeneratorDefinition['class'] ?? null;
