@@ -72,17 +72,17 @@ final class MetadataLoader
         });
 
         foreach ($associations as $association) {
-            $column = $association['joinColumns'][0] ?? [];
+            $column = $association->joinColumns[0] ?? [];
             if (!\count($column)) {
                 continue; // looks broken...
             }
             // ONE_TO_ONE  does not have the 'nullable' key, but creates tables that are nullable
-            $nullable = ($association['type'] === ClassMetadata::ONE_TO_ONE || (bool) $column['nullable']);
+            $nullable = ($association->type() === ClassMetadata::ONE_TO_ONE || (bool) $column->nullable);
             $hasDefault = false; // joins can never have a default relation
             $defaultValue = null;
             $dmeta->addField(
-                $association['fieldName'],
-                (new JoinColumnMetadata($column['name'], '', $nullable, $hasDefault, $defaultValue))
+                $association->fieldName,
+                (new JoinColumnMetadata($column->name, '', $nullable, $hasDefault, $defaultValue))
                     ->setReferenced($column['referencedColumnName'])
             );
         }
