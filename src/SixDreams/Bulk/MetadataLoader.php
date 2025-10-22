@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace SixDreams\Bulk;
 
 use Doctrine\ORM\Id\AbstractIdGenerator;
+use Doctrine\ORM\Mapping\AssociationMapping;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use SixDreams\DTO\ColumnMetadata;
 use SixDreams\DTO\JoinColumnMetadata;
@@ -66,8 +67,8 @@ final class MetadataLoader
             $dmeta->setGenerator($generator);
         }
 
-        $associations = \array_filter($metadata->getAssociationMappings(), function (array $association) {
-            return \array_key_exists($association['type'], self::SUPPORTED_JOINS);
+        $associations = \array_filter($metadata->getAssociationMappings(), function (AssociationMapping $association) {
+            return \array_key_exists($association->type(), self::SUPPORTED_JOINS);
         });
 
         foreach ($associations as $association) {
