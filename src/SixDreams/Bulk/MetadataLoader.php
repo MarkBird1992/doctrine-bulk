@@ -5,7 +5,6 @@ namespace SixDreams\Bulk;
 
 use Doctrine\ORM\Id\AbstractIdGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use SixDreams\DTO\ColumnMetadata;
 use SixDreams\DTO\JoinColumnMetadata;
 use SixDreams\DTO\Metadata;
@@ -21,7 +20,7 @@ final class MetadataLoader
     private static $metadata = [];
 
     // Supported Join types.
-    private const SUPPORTED_JOINS = [ClassMetadataInfo::ONE_TO_ONE => null, ClassMetadataInfo::MANY_TO_ONE => null];
+    private const SUPPORTED_JOINS = [ClassMetadata::ONE_TO_ONE => null, ClassMetadata::MANY_TO_ONE => null];
 
     /**
      * MetadataLoader constructor.
@@ -80,7 +79,7 @@ final class MetadataLoader
                 continue; // looks broken...
             }
             // ONE_TO_ONE  does not have the 'nullable' key, but creates tables that are nullable
-            $nullable = ($association['type'] === ClassMetadataInfo::ONE_TO_ONE || (bool) $column['nullable']);
+            $nullable = ($association['type'] === ClassMetadata::ONE_TO_ONE || (bool) $column['nullable']);
             $hasDefault = false; // joins can never have a default relation
             $defaultValue = null;
             $dmeta->addField(

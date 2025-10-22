@@ -4,9 +4,8 @@ declare(strict_types = 1);
 namespace SixDreams\Bulk;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
-use SixDreams\DTO\ColumnMetadata;
 use SixDreams\DTO\ColumnMetadataInterface;
 use SixDreams\Exceptions\CannotChangeWhereException;
 use SixDreams\Exceptions\FieldNotFoundException;
@@ -280,7 +279,7 @@ class BulkUpdate extends AbstractBulk
      */
     protected function simpleValue($value, AbstractPlatform $platform, ?ColumnMetadataInterface $metadata = null)
     {
-        if ($metadata && $platform->getName() === 'postgresql' && $metadata->getType() === Type::BOOLEAN) {
+        if ($metadata && $platform->getName() === 'postgresql' && $metadata->getType() === Types::BOOLEAN) {
             return $value ? 'true' : 'false';
         }
         if (null === $value) {
